@@ -6,6 +6,7 @@ conn = psycopg2.connect(
     dbname=week3 user=postgres host=localhost port=5432
     """
 )
+
 conn.set_session(autocommit=True)
 
 # open a cursor to perform database operations
@@ -50,4 +51,14 @@ cur.execute(
 # retrieve query results
 records = cur.fetchall()
 
-print(records)
+# print(records)
+
+cur.execute(
+    """
+    SELECT color, name FROM veggies
+    """
+)
+
+veggie_records = cur. fetchall()
+for v in veggie_records:
+    print(v[0], v[1])
