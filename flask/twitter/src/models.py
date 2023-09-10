@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
-DB = SQLAlchemy()
+db = SQLAlchemy()
 
 class User(db.Model):
     __tablename__ = 'users'
