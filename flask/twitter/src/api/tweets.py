@@ -16,7 +16,7 @@ def show(id: int):
     t = Tweet.query.get_or_404(id, "Tweet not found")
     return jsonify(t.serialize())
 
-@bp.rout('', methods=['POST'])
+@bp.route('', methods=['POST'])
 def create():
     #req body must contain user_id and content
     if 'user_id' not in request.json or 'content' not in request.json:
@@ -32,3 +32,13 @@ def create():
     db.session.commit() #execute CREATE statement
     return jsonify(t.serialize())
 
+@bp.route('/<int:id>', methods=['DELETE'])
+def delete(id: int):
+    t = Tweet.query.get_or_404(id, "Tweet not found")
+    try:
+        db.session.delete(t)    # prepare DELETE statement
+        db.session.commit()     # execute DELETE statement
+        return jsonify(True)
+    except:
+        # something went wrong :(
+        return jsonify(False)
