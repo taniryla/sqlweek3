@@ -1,7 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy
 import datetime
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
+
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -19,7 +20,8 @@ class User(db.Model):
             'id': self.id,
             'username': self.username
         }
-    
+
+
 likes_table = db.Table(
     'likes',
     db.Column(
@@ -27,17 +29,20 @@ likes_table = db.Table(
         db.ForeignKey('users.id'),
         primary_key=True
     ),
+
     db.Column(
         'tweet_id', db.Integer,
         db.ForeignKey('tweets.id'),
         primary_key=True
     ),
+
     db.Column(
         'created_at', db.DateTime,
         default=datetime.datetime.utcnow,
         nullable=False
     )
 )
+
 
 class Tweet(db.Model):
     __tablename__ = 'tweets'
@@ -48,19 +53,18 @@ class Tweet(db.Model):
         default=datetime.datetime.utcnow,
         nullable=False
     )
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', nullable=False))
-
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     liking_users = db.relationship(
         'User', secondary=likes_table,
         lazy='subquery',
         backref=db.backref('liked_tweets', lazy=True)
     )
-    
+
     def __init__(self, content: str, user_id: int):
         self.content = content
         self.user_id = user_id
 
-  def serialize(self):
+    def serialize(self):
         return {
             'id': self.id,
             'content': self.content,
