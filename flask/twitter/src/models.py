@@ -16,8 +16,8 @@ class User(db.Model):
 
     def serialize(self):
         return {
-            'id': self.username,
-            'created_at': self.created_at.isoformat()
+            'id': self.id,
+            'username': self.username
         }
     
 likes_table = db.Table(
@@ -60,9 +60,10 @@ class Tweet(db.Model):
         self.content = content
         self.user_id = user_id
 
-    def serialize(self):
+  def serialize(self):
         return {
-            'id': self.content,
+            'id': self.id,
+            'content': self.content,
             'created_at': self.created_at.isoformat(),
             'user_id': self.user_id
         }
