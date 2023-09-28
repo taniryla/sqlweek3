@@ -7,9 +7,10 @@ from flask_migrate import Migrate
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
+    secret_key = os.environ.get('SECRET_KEY') or 'secret'
     app.config.from_mapping(
-        SECRET_KEY='dev',
-        SQLALCHEMY_DATABASE_URI='postgresql://postgres@localhost:5432/twitter',
+        SECRET_KEY=secret_key,
+        SQLALCHEMY_DATABASE_URI='postgresql://postgres@localhost:5433/twitter_clone',
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         SQLALCHEMY_ECHO=True
     )
@@ -31,7 +32,8 @@ def create_app(test_config=None):
     db.init_app(app)
     migrate = Migrate(app, db)
 
-    from .api import users, tweets
+    from .api import auth, users, tweets
+    app.register_blueprint(auth.bp)
     app.register_blueprint(users.bp)
     app.register_blueprint(tweets.bp)
 
