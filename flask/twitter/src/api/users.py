@@ -52,6 +52,8 @@ def create():
     db.session.commit()  # execute CREATE statement
     return jsonify(u.serialize())
 
+# Define a route for deleting a user
+
 @bp.route('/<int:id>', methods=['DELETE'])
 def delete(id: int):
     u = User.query.get_or_404(id, "User not found")
@@ -63,31 +65,40 @@ def delete(id: int):
         # something went wrong :(
         return jsonify(False)
     
-@bp.route('/<int:id>', methods=['PATCH', 'PUT'])
-def update(id: int):
-    u = User.query.get_or_404(id) # this code queries the user table to find out if a user record with the requested id exists
-     #req body must contain username only, password only and both username and password
-    if 'username' not in request.json or 'password' not in request.json:
-        return abort(400)
-    if len(request.json['username']) <= 3 or len(request.json['password']) <= 8:
-        return abort(400)
-    # construct User
-    u = User(
-        username=request.json['username'],
-        password=scramble(request.json['password'])
-    )
+    # Define a route for updating a user
+    
+
+@bp.route("/<int:id>", methods=["PATCH", "PUT"])
+def update(id):
+    u = User.query.get_or_404(id)
+    # Check if username and password are provided
+    if "username" not in request.json and "password" not in request.json:
+        abort(400)
+
+    # Update username if provided
+    if "username" in request.json:
+        username = request.json["username"]
+        if len(username) < 3:
+            abort(400)
+        u.username = username
+
+    # Update password if provided
+    if "password" in request.json:
+        password = request.json["password"]
+        if len(password) < 8:
+            abort(400)
+        u.password = scramble(password)
     try:
-        db.session.update(u)    # prepare UPDATE statement
-        db.session.commit()     # execute UPDATE statement
+        db.session.commit()
         return jsonify(u.serialize())
     except:
-        # something went wrong :(
         return jsonify(False)
+
+# Define a route for getting the liked tweets of a user
     
-@bp.route('/<int:id>/liking_tweets', methods=['GET'])
-def liking_tweets(id: int):
+@bp.route("/<int:id>/liked_tweets", methods=["GET"])
+def liked_tweets(id):
     u = User.query.get_or_404(id)
-    result = []
-    for t in u.liking_tweets:
-        result.append(t.serialize())
-    return jsonify(result)
+    liked_tweets = u.liked_tweets
+
+    return jsonify([t.serialize() for t in liked_tweets])
