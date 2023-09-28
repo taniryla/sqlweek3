@@ -10,7 +10,7 @@ def create_app(test_config=None):
     secret_key = os.environ.get('SECRET_KEY') or 'secret'
     app.config.from_mapping(
         SECRET_KEY=secret_key,
-        SQLALCHEMY_DATABASE_URI='postgresql://postgres@localhost:5432/twitter',
+        SQLALCHEMY_DATABASE_URI='postgresql://postgres@localhost:5433/twitter_clone',
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
         SQLALCHEMY_ECHO=True
     )

@@ -111,3 +111,7 @@ VALUES (9012, 1234, 'Its a beautiful day in the neighborhood', '2004-10-19 10:23
 
 INSERT INTO posts (tweet, stamp, user_id)
 VALUES ('What is today?', '2004-10-19 07:21:51', 1234)
+
+-- create one index
+
+CREATE INDEX posts_btree_index ON posts(tweet);
