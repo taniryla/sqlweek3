@@ -7,14 +7,23 @@ Miraquill is a startup that allows users to microblog poems. I am building a twi
     -The user has username, email, and password that are mandatory fields and bio, date of birthy, profile photo and background photo that are optional
     -The user can make posts that show up in a single thread timeline where the ujsers can bookmark and others can comment and retweet.
 
-# API Reference Table
+# API Reference Table For Users
 
 | Endpoint Paths            | Methods | Parameters  |
 | ------------------------- | ------- | ----------- |
 | Route for all users       | GET     | ""          |
 | Route for a specific user | GET     | "/<int:id>" |
 | Creating a new user       | POST    | ""          |
-| Route for a specific user | GET     | "/<int:id>" |
+| Deleting a user           | GET     | "/<int:id>" |
+
+# API Reference Table For Tweets
+
+| Endpoint Paths             | Methods | Parameters  |
+| -------------------------- | ------- | ----------- |
+| Route for all tweets       | GET     | ""          |
+| Route for a specific tweet | GET     | "/<int:id>" |
+| Creating a new tweet       | POST    | ""          |
+| Deleting a tweet           | GET     | "/<int:id>" |
 
 # ERD
 
